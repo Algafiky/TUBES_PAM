@@ -7,9 +7,13 @@ import { Fontisto } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import firebase from '../firebase';
 
-const DetailScreen = ({ route }) => {
+const DetailScreen = ({ navigation, route }) => {
     const { item } = route.params;
     const [isFavorite, setIsFavorite] = useState(false);
+
+    const handleItemPress = (item) => {
+        navigation.navigate('GantiGambarKos', { item });
+    };
 
     const handleFavoritePress = async () => {
         const user = firebase.auth().currentUser;
@@ -52,88 +56,92 @@ const DetailScreen = ({ route }) => {
                 />
             </TouchableOpacity>
             <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.title}>{item.kostid}</Text>
+            <TouchableOpacity style={styles.listItemRecom} onPress={() => handleItemPress(item)}>
+                <Text>Ganti Gambar</Text>
+            </TouchableOpacity>
             <ScrollView>
                 <View style={styles.detailContainer}>
                     <Text style={styles.desc}>Fasilitas Kamar</Text>
-                    <TouchableOpacity style={styles.textList}>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="air-conditioner" size={24} color="black" />
                         <Text style={styles.ListText}>Air Conditioner</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="bed-single" size={24} color="black" />
                         <Text style={styles.ListText}>Kasur</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="desk" size={24} color="black" />
                         <Text style={styles.ListText}>Meja belajar</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="cupboard" size={24} color="black" />
                         <Text style={styles.ListText}>Lemari</Text>
-                    </TouchableOpacity>
+                    </View>
 
                 </View>
                 <View style={styles.detailContainer}>
                     <Text style={styles.desc}>Fasilitas Kamar Mandi</Text>
-                    <TouchableOpacity style={styles.textList}>
+                    <View style={styles.textList}>
                         <FontAwesome name="bathtub" size={24} color="black" />
                         <Text style={styles.ListText}>Bak Mandi</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="toilet" size={24} color="black" />
                         <Text style={styles.ListText}>Toilet duduk</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <FontAwesome name="shower" size={24} color="black" />
                         <Text style={styles.ListText}>Shower</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="hanger" size={24} color="black" />
                         <Text style={styles.ListText}>Jemuran</Text>
-                    </TouchableOpacity>
+                    </View>
 
                 </View>
                 <View style={styles.detailContainer}>
                     <Text style={styles.desc}>Fasilitas Umum</Text>
-                    <TouchableOpacity style={styles.textList}>
+                    <View style={styles.textList}>
                         <Fontisto name="wifi-logo" size={24} color="black" />
                         <Text style={styles.ListText}>Free Wifi</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="stove" size={24} color="black" />
                         <Text style={styles.ListText}>Dapur</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="cctv" size={24} color="black" />
                         <Text style={styles.ListText}>CCTV 24 jam</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <MaterialIcons name="local-parking" size={24} color="black" />
                         <Text style={styles.ListText}>Area Parkir</Text>
-                    </TouchableOpacity>
+                    </View>
 
                 </View>
                 <View style={styles.detailContainer}>
                     <Text style={styles.desc}>Peraturan Kos</Text>
-                    <TouchableOpacity style={styles.textList}>
+                    <View style={styles.textList}>
                         <MaterialCommunityIcons name="hours-24" size={24} color="black" />
                         <Text style={styles.ListText}>Akses 24 jam</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <Foundation name="no-dogs" size={24} color="black" />
                         <Text style={styles.ListText}>Dilarang membawa hewan buas</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.textList}>
+                    </View>
+                    <View style={styles.textList}>
                         <Foundation name="no-smoking" size={24} color="black" />
                         <Text style={styles.ListText}>Dilarang Merokok</Text>
-                    </TouchableOpacity>
+                    </View>
 
                 </View>
             </ScrollView>
             <View style={styles.footer}>
                 <Text style={styles.price}>Rp. 6.500.000</Text>
-                <Text style={styles.button}>Ajukan Sewa</Text>
+                <TouchableOpacity>
+                    <Text style={styles.button}>Ajukan Sewa</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -166,16 +174,18 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         backgroundColor: "#00AA13",
         padding: 15,
-        paddingHorizontal: 50,
+        paddingHorizontal: 30,
         borderRadius: 30,
         fontSize: 15,
         fontWeight: "bold",
         color: "#00203FFF",
         borderWidth: 1,
         borderColor: "#00203FFF",
+        marginLeft: 100,
     },
     footer: {
         borderRadius: 10,
+        flexDirection: 'row',
         backgroundColor: "#ffc0cb",
         alignItems: "center",
     },
