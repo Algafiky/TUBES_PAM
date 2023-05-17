@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import firebase from '../firebase';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -7,7 +7,7 @@ const LoginPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
- 
+
     const goToRegisterPage = () => {
         navigation.navigate('Register');
     };
@@ -21,16 +21,34 @@ const LoginPage = ({ navigation }) => {
                 navigation.navigate('Home');
             })
             .catch((error) => {
-                Alert.alert('Email/Password Salah', [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ]);
-
+                if (error.code === 'auth/invalid-email') {
+                    Alert.alert('Error', 'Email tidak valid', [
+                        { text: 'OK'},
+                    ]);
+                } else if (error.code === 'auth/user-disabled') {
+                    Alert.alert('Error', 'Akun pengguna dinonaktifkan', [
+                        { text: 'OK'},
+                    ]);
+                } else if (error.code === 'auth/user-not-found') {
+                    Alert.alert('Error', 'Pengguna tidak ditemukan', [
+                        { text: 'OK'},
+                    ]);
+                } else if (error.code === 'auth/wrong-password') {
+                    Alert.alert('Error', 'Password salah', [
+                        { text: 'OK'},
+                    ]);
+                }
             });
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            <View style={styles.header}>
+                <Text style={styles.title}>Login</Text>
+                <Image
+                    style={styles.gambarlogo}
+                    source={require('../assets/logo.png')} />
+            </View>
             <View style={styles.inputContainer}>
                 <MaterialIcons name="email" size={24} color="gray" />
                 <TextInput
@@ -75,6 +93,13 @@ const LoginPage = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    gambarlogo: {
+        width: 75,
+        height: 75,
+      },
+    header: {
+        flexDirection: 'row',
+    },
     container: {
         backgroundColor: '#ADB3BC',
         flex: 1,
@@ -84,12 +109,11 @@ const styles = StyleSheet.create({
     },
     title: {
         position: 'relative',
-        lineHeight: 46,
-        right: 100,
-        bottom: 50,
         fontSize: 40,
-        fontWeight: 400,
-        marginBottom: 20,
+        fontWeight: 'bold',
+        marginLeft: -150,
+        lineHeight: 65,
+        
     },
     button: {
         backgroundColor: '#58D774',

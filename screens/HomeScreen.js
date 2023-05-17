@@ -88,7 +88,9 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>i-kost</Text>
+      <Image 
+      style={styles.gambar} 
+      source={require('../assets/logo.png')} />
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -129,15 +131,15 @@ const HomeScreen = ({ navigation }) => {
         />
       </View>
 
+      <Text style={styles.TextRekomPromo}>Map</Text>
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: userLocation?.coords.latitude || 0,
-          longitude: userLocation?.coords.longitude || 0,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
+          latitude: userLocation?.coords.latitude || -5.357814,
+          longitude: userLocation?.coords.longitude || 105.314771,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}>
         {userLocation && (
           <Marker
             pinColor={'Blue'}
@@ -156,11 +158,15 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  gambar: {
+    marginTop: 0,
+    width: 75,
+    height: 75,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 10,
     backgroundColor: '#ADB3BC',
-    paddingTop: 20,
   },
   title: {
     fontSize: 24,
@@ -222,6 +228,7 @@ const styles = StyleSheet.create({
   recomendationList: {
     marginVertical: 10,
     backgroundColor: '#666666',
+    borderRadius: 10,
   },
   listItemPromo: {
     marginHorizontal: 7,
